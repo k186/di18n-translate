@@ -8,7 +8,7 @@ module.exports = {
   },
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		library: 'DI18n',
+		library: 'CabinXDI18n',
 		libraryTarget: 'umd',
 		filename: '[name].js'
 	},

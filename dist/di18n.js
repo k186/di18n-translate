@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["DI18n"] = factory();
+		exports["CabinXDI18n"] = factory();
 	else
-		root["DI18n"] = factory();
+		root["CabinXDI18n"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -62,9 +62,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = _di18n.DI18n;
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -158,6 +158,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        for (var i = 0; i < this.doms.contentDoms.length; i++) {
 	          var dom = this.doms.contentDoms[i];
 	          var content = dom.getAttribute(CONTENT_ATTRIBUTE);
+	          console.log(content);
 	          dom.innerHTML = this.messages[this.locale][content];
 	        }
 	      }
@@ -214,90 +215,93 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return DI18n;
 	}(_translate2.default);
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _util = __webpack_require__(3);
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var T = function () {
-	  function T(options) {
-	    _classCallCheck(this, T);
+	    function T(options) {
+	        _classCallCheck(this, T);
 
-	    this.locale = options.locale || 'zh';
-	    this.messages = options.messages || {};
-	  }
-
-	  _createClass(T, [{
-	    key: '$t',
-	    value: function $t(key) {
-	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        args[_key - 1] = arguments[_key];
-	      }
-
-	      var str = String(this.messages[this.locale][key]);
-
-	      if (args.length === 1 && _typeof(args[0]) === 'object') {
-	        args = args[0];
-	      } else {
-	        args = {};
-	      }
-
-	      if (!args || !args.hasOwnProperty) {
-	        args = {};
-	      }
-
-	      var RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
-
-	      return str.replace(RE_NARGS, function (match, prefix, i, index) {
-	        var result = '';
-	        if (str[index - 1] === '{' && str[index + match.length] === '}') {
-	          return i;
-	        } else {
-	          result = args.hasOwnProperty(i) ? args[i] : match;
-	          if (!result) {
-	            return '';
-	          }
-
-	          return result;
-	        }
-	      });
+	        this.locale = options.locale || 'zh';
+	        this.messages = options.messages || {};
 	    }
-	  }, {
-	    key: '$html',
-	    value: function $html(content) {
-	      var _this = this;
 
-	      content = String(content);
-	      var RE_NARGS = /\$\{locale\}|\$t\(['"]([\s\S]+?)['"]\)/g;
-	      return content.replace(RE_NARGS, function (match, prefix, i, index) {
-	        if (match === '${locale}') {
-	          return _this.locale;
-	        } else {
-	          return _this.messages[_this.locale][prefix] || prefix;
+	    _createClass(T, [{
+	        key: '$d',
+	        value: function $d(key) {
+	            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	                args[_key - 1] = arguments[_key];
+	            }
+
+	            var str = String((0, _util.getValueByPath)(this.messages[this.locale], key));
+
+	            if (args.length === 1 && _typeof(args[0]) === 'object') {
+	                args = args[0];
+	            } else {
+	                args = {};
+	            }
+
+	            if (!args || !args.hasOwnProperty) {
+	                args = {};
+	            }
+
+	            var RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
+
+	            return str.replace(RE_NARGS, function (match, prefix, i, index) {
+	                var result = '';
+	                if (str[index - 1] === '{' && str[index + match.length] === '}') {
+	                    return i;
+	                } else {
+	                    result = args.hasOwnProperty(i) ? args[i] : match;
+	                    if (!result) {
+	                        return '';
+	                    }
+
+	                    return result;
+	                }
+	            });
 	        }
-	      });
-	    }
-	  }]);
+	    }, {
+	        key: '$html',
+	        value: function $html(content) {
+	            var _this = this;
 
-	  return T;
+	            console.warn('cabinX不支持html翻译,请勿使用此方法');
+	            content = String(content);
+	            var RE_NARGS = /\$\{locale\}|\$t\(['"]([\s\S]+?)['"]\)/g;
+	            return content.replace(RE_NARGS, function (match, prefix, i, index) {
+	                if (match === '${locale}') {
+	                    return _this.locale;
+	                } else {
+	                    return (0, _util.getValueByPath)(_this.messages[_this.locale], prefix) || prefix;
+	                }
+	            });
+	        }
+	    }]);
+
+	    return T;
 	}();
 
 	exports.default = T;
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -307,6 +311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.hasClass = hasClass;
 	exports.addClass = addClass;
 	exports.removeClass = removeClass;
+	exports.getValueByPath = getValueByPath;
 	function hasClass(ele, cls) {
 	  return new RegExp(cls).test(ele.className || '');
 	}
@@ -323,8 +328,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (_pattern.test(ele.className || '')) ele.className = ele.className.replace(_pattern, '');
 	  return ele;
 	}
+	function getValueByPath(obj, path) {
+	  var tempObj = obj;
+	  path = path.replace(/\[(\w+)\]/g, '.$1');
+	  path = path.replace(/^\./, '');
 
-/***/ }
+	  var keyArr = path.split('.');
+	  var i = 0;
+	  var flag = true;
+	  for (var len = keyArr.length; i < len - 1; ++i) {
+	    var key = keyArr[i];
+	    if (key in tempObj) {
+	      tempObj = tempObj[key];
+	    } else {
+	      flag = false;
+	    }
+	  }
+	  if (flag) {
+	    return tempObj[keyArr[i]];
+	  } else {
+	    return undefined;
+	  }
+	}
+
+/***/ })
 /******/ ])
 });
 ;

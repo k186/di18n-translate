@@ -13,23 +13,25 @@
   <input type="text" i18n-placeholder="确定">
   <br/>
   <img alt="img" i18n-img="./favicon.png" width="30" height="30">
-  <script src="./dist/di18n.min.js"></script>
+  <script src="./dist/di18n.js"></script>
   <script>
     const di18n = new DI18n({
       locale: 'en',
       isReplace: true,
       messages: {
         en: {
-          你好: 'Hello',
+          你好: 'Hello  {xxx} {bb}',
           设置密码: 'set password',
           记住密码: '设置密码可保障资金安全，密码为后续登录凭证，请务必牢记',
           确定: "confirm"
         },
         zh: {
-          你好: '你好'
+          你好: '你好 {xxx} {bb}'
         }
       }
     })
+    var a=di18n.$t('你好',{xxx:12,bb:32});
+    debugger
   </script>
 </body>
 
